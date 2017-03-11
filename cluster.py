@@ -5,21 +5,49 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from sklearn import metrics
 from sklearn import cross_validation as cv
+import math
 
 
 df = pd.read_csv('./dataset_diabetes/data-set.csv')
 #data_dict = df.to_dict(orient='dict')
 #data_dict = list(df.T.itertuples())
 #print data_dict 
-data = df.as_matrix(columns=[df.columns[4],df.columns[9]])
-print data
+race1 =[]
+'''
+for i in range(len(df.race)):
+	if math.isdigit(df.race[i]):
+		df.drop(df.index[i])
 
-train_data, test_data = cv.train_test_split(df[['age','time_in_hospital']],test_size = 0.20)
+
+'''
+for i in range(len(df.race)):
+	#print i
+	try:
+		if df.race[i] == '?':
+			print i
+			print df.race[i]
+			df.drop(df.index[i])
+	except:
+		pass
+
+for i in df.race:
+	race1.append(int(i))
+	
+
+
+data = df.as_matrix(columns=[race1,df.columns[4],df.columns[9]])
+print "first data",data
+
+
+train_data, test_data = cv.train_test_split(data,test_size = 0.20)
 train_data = np.array(train_data)
 #print train_data
 test_data = np.array(test_data)
 
-clf=KMeans(n_clusters=3,init='k-means++',precompute_distances='auto',n_jobs=1)
+label = train_data[:,1]
+print label
+
+clf=KMeans(n_clusters=5,init='k-means++',precompute_distances='auto',n_jobs=1)
 t0=time()
 clf.fit(train_data)
 #print clf
@@ -29,14 +57,14 @@ pred=clf.predict(test_data)
 print pred
 print "Testing time :" , round(time()-t1,3) ,"s"
 labels = clf.labels_
-#print labels
+print labels
 centroids = clf.cluster_centers_
-'''
 print "centroids are :",centroids
-print("Homogeneity: %0.3f "% metrics.homogeneity_score(train_data, clf.labels_))
-print("Completeness: %0.3f" % metrics.completeness_score(train_data, clf.labels_))
-print("V-measure: %0.3f" % metrics.v_measure_score(train_data, clf.labels_))
-'''
+print("Homogeneity: %0.3f "% metrics.homogeneity_score(label,clf.labels_))
+#print("Completeness: %0.3f" % metrics.completeness_score(train_data, clf.labels_))
+
+#print("V-measure: %0.3f" % metrics.v_measure_score(train_data, clf.labels_))
+
 for i in range(3):
     ds = train_data[np.where(labels==i)]
     plt.plot(ds[:,0],ds[:,1],'o')
