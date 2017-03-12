@@ -35,16 +35,13 @@ def data_filtered(df):
     data = filtered_data.as_matrix(columns=[df.columns[2],df.columns[4],df.columns[9]])
     return data
 
-<<<<<<< HEAD
 def split_data(data):
     train_data, test_data = cv.train_test_split(data,test_size = 0.20)
     train_data = np.array(train_data)
     #print train_data
     test_data = np.array(test_data)
     return (train_data,test_data)
-=======
-print "first data",data
->>>>>>> 3f8c521f3be89b93948838164d20cf6d8790f1c7
+
 
 def getlabels(train_data):
     label = train_data[:,0]
