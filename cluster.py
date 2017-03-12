@@ -7,35 +7,25 @@ from sklearn import metrics
 from sklearn import cross_validation as cv
 import math
 
-
-df = pd.read_csv('./dataset_diabetes/data-set.csv')
+df = pd.read_csv('./dataset_diabetes/data-set-dev.csv')
 #data_dict = df.to_dict(orient='dict')
 #data_dict = list(df.T.itertuples())
-#print data_dict 
-race1 =[]
-'''
-for i in range(len(df.race)):
-	if math.isdigit(df.race[i]):
-		df.drop(df.index[i])
-
+#print data_dict
 
 '''
 for i in range(len(df.race)):
-	#print i
-	try:
-		if df.race[i] == '?':
-			print i
-			print df.race[i]
-			df.drop(df.index[i])
-	except:
-		pass
-
-for i in df.race:
-	race1.append(int(i))
-	
+    if math.isdigit(df.race[i]):
+        df.drop(df.index[i])
 
 
-data = df.as_matrix(columns=[race1,df.columns[4],df.columns[9]])
+'''
+
+filtered_data = df[df.race != '?']
+
+data = filtered_data.as_matrix(
+    columns=[df.columns[2],df.columns[4],df.columns[9]])
+
+
 print "first data",data
 
 
