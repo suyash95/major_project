@@ -12,30 +12,52 @@ df = pd.read_csv('./dataset_diabetes/data-set.csv')
 #data_dict = df.to_dict(orient='dict')
 #data_dict = list(df.T.itertuples())
 #print data_dict 
-race1 =[]
+#race1 =[]
 '''
 for i in range(len(df.race)):
 	if math.isdigit(df.race[i]):
 		df.drop(df.index[i])
-
-
 '''
+
 for i in range(len(df.race)):
 	#print i
 	try:
 		if df.race[i] == '?':
-			print i
-			print df.race[i]
+			#print i
+			#print df.race[i]
 			df.drop(df.index[i])
+			#print "j is:",j
 	except:
 		pass
 
+#print "\t",df.race 
+count=0
 for i in df.race:
-	race1.append(int(i))
-	
+	try:
+		race1 = int(df.race[i])
+		df.race[i]=race1
+		#count=count+1
+	except:
+		pass
 
+print df.race
+'''
+#print "race count",count
+#print "race1 is:"
+#print "\t" ,race1
+count =0
+for i in df.age:
+	count=count+1
 
-data = df.as_matrix(columns=[race1,df.columns[4],df.columns[9]])
+print 'age count',count
+
+count=0
+for i in df,time_in_hospital:
+	count=count+1
+
+print 'time count',count
+'''
+data = df.as_matrix(columns=[df.columns[2],df.columns[4],df.columns[9]])
 print "first data",data
 
 
@@ -44,7 +66,7 @@ train_data = np.array(train_data)
 #print train_data
 test_data = np.array(test_data)
 
-label = train_data[:,1]
+label = train_data[:,0]
 print label
 
 clf=KMeans(n_clusters=5,init='k-means++',precompute_distances='auto',n_jobs=1)
