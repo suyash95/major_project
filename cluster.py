@@ -7,10 +7,10 @@ from sklearn import metrics
 from sklearn import cross_validation as cv
 import math
 
-
-df = pd.read_csv('./dataset_diabetes/data-set.csv')
+df = pd.read_csv('./dataset_diabetes/data-set-dev.csv')
 #data_dict = df.to_dict(orient='dict')
 #data_dict = list(df.T.itertuples())
+<<<<<<< HEAD
 #print data_dict 
 #race1 =[]
 '''
@@ -48,9 +48,26 @@ print df.race
 count =0
 for i in df.age:
 	count=count+1
+=======
+#print data_dict
+
+'''
+for i in range(len(df.race)):
+    if math.isdigit(df.race[i]):
+        df.drop(df.index[i])
+
+
+'''
+
+filtered_data = df[df.race != '?']
+
+data = filtered_data.as_matrix(
+    columns=[df.columns[2],df.columns[4],df.columns[9]])
+>>>>>>> 870b2ee44a6a26e28d957fa3f686954387be454d
 
 print 'age count',count
 
+<<<<<<< HEAD
 count=0
 for i in df,time_in_hospital:
 	count=count+1
@@ -58,6 +75,8 @@ for i in df,time_in_hospital:
 print 'time count',count
 '''
 data = df.as_matrix(columns=[df.columns[2],df.columns[4],df.columns[9]])
+=======
+>>>>>>> 870b2ee44a6a26e28d957fa3f686954387be454d
 print "first data",data
 
 
