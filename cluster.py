@@ -36,7 +36,6 @@ filtered_data = df[df.race != '?']
 data = filtered_data.as_matrix(
     columns=[df.columns[2],df.columns[4],df.columns[9]])
 
-data = df.as_matrix(columns=[df.columns[2],df.columns[4],df.columns[9]])
 print "first data",data
 
 
