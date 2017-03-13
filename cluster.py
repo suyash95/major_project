@@ -7,30 +7,7 @@ from sklearn import metrics
 from sklearn import cross_validation as cv
 import math
 
-# '''
-# df = pd.read_csv('./dataset_diabetes/data-set-dev.csv')
-# #race1 =[]
-# '''
-
-# '''
-# for i in range(len(df.race)):
-# 	if math.isdigit(df.race[i]):
-# 		df.drop(df.index[i])
-
-# for i in range(len(df.race)):
-# 	#print i
-# 	try:
-# 		if df.race[i] == '?':
-# 			#print i
-# 			#print df.race[i]
-# 			df.drop(df.index[i])
-# 			#print "j is:",j
-# 	except:
-# 		pass
-# '''
-
 def data_filtered(df):
-    
     filtered_data = df[df.race != '?']
     data = filtered_data.as_matrix(columns=[df.columns[2],df.columns[4],df.columns[9]])
     return data
@@ -48,7 +25,7 @@ def getlabels(train_data):
     print label
     return label
 
-def kmeans(data,k):
+def kmeans(k, train_data):
     clf=KMeans(n_clusters=k,init='k-means++',precompute_distances='auto',n_jobs=1)
     t0=time()
     clf.fit(train_data)
@@ -82,12 +59,19 @@ def visualize(train_data,labels,centroids):
         plt.setp(lines,mew=2.0)
 	plt.show()
 
+        
 
-df = pd.read_csv('./dataset_diabetes/data-set.csv')
-data=data_filtered(df)  
-train_data,test_data = split_data(data)
-clf=kmeans(data,4)
-label = getlabels(train_data)
-labels,centroids = prediction(test_data,clf)
-metrices(label,clf)
-visualize(train_data,labels,centroids)
+def start_clustering(filename):
+    df = pd.read_csv(filename)
+    data = data_filtered(df)  
+
+    train_data,test_data = split_data(data)
+
+    clf=kmeans(4, train_data)
+
+    label = getlabels(train_data)
+    labels,centroids = prediction(test_data,clf)
+    metrices(label,clf)
+    return (label, centroids)
+
+# visualize(train_data,labels,centroids)
