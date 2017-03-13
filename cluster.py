@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn import metrics
 from sklearn import cross_validation as cv
 import math
-
+#from file_split import file_split
 def data_filtered(df):
     filtered_data = df[df.race != '?']
     data = filtered_data.as_matrix(columns=[df.columns[2],df.columns[4],df.columns[9]])
@@ -58,8 +58,6 @@ def visualize(train_data,labels,centroids):
         plt.setp(lines,ms=15.0)
         plt.setp(lines,mew=2.0)
 	plt.show()
-
-        
 
 def start_clustering(filename):
     df = pd.read_csv(filename)
