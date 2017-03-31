@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import server
 import cluster
-import requests
+import grequests
 
 def file_split(n):
 	list1 = []
@@ -15,16 +15,34 @@ def file_split(n):
     
 if __name__ == '__main__':
 	list1,test_data = file_split(4)
-	print list1[0]
-	r = requests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[0]})
-	print r.text
+	
+	def exception_handler(request, exception):
+		print "Request failed"
 
-	r1 = requests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[1]})
-	print r1.text
+	reqs = [
+	grequests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[0]}),
+	grequests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[1]}),
+	grequests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[2]}),
+	grequests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[3]})
 	
-	r2 = requests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[2]}) 
-	print r2.text
+	]
+	r=grequests.map(reqs, exception_handler=exception_handler)
+	for i in r:
+		print i.text
+
+
+	#r = requests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[0]})
 	
-	r3 = requests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[3]})
-	print r3.text
+	#print r.text
+
+	
+	#r1 = requests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[1]})
+	#print r1.text
+	
+	
+	#r2 = requests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[2]}) 
+	#print r2.text
+	
+	#r3 = requests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[3]})
+	#print r3.text
 
