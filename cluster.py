@@ -7,6 +7,8 @@ from sklearn import metrics
 from sklearn import cross_validation as cv
 import math
 #from file_split import file_split
+
+
 def data_filtered(df):
     filtered_data = df[df.race != '?']
     data = filtered_data.as_matrix(columns=[df.columns[2],df.columns[4],df.columns[9]])
@@ -22,7 +24,8 @@ def split_data(data):
 
 def getlabels(train_data):
     label = train_data[:,0]
-    print label
+    #print "labels are:"
+    #print label
     return label
 
 def kmeans(k, train_data):
@@ -59,17 +62,21 @@ def visualize(train_data,labels,centroids):
         plt.setp(lines,mew=2.0)
 	plt.show()
 
-def start_clustering(filename):
-    df = pd.read_csv(filename)
+
+def start_clustering(train_data):
+    #print train_data
+    df = pd.read_csv('./dataset_diabetes/data-set.csv')
     data = data_filtered(df)  
 
-    train_data,test_data = split_data(data)
+    traindata,test_data = split_data(data)
 
     clf=kmeans(4, train_data)
 
     label = getlabels(train_data)
     labels,centroids = prediction(test_data,clf)
-    metrices(label,clf)
-    return (label, centroids)
+    #print labels
+    #metrices(labels,clf)
+    #visualize(train_data,labels,centroids)
+    return (labels, centroids)
 
-# visualize(train_data,labels,centroids)
+ 
