@@ -1,12 +1,14 @@
+import grequests
 import numpy as np
 import pandas as pd
-import server
+import math
+
 import cluster
-import grequests
+
 
 def file_split(n):
 	list1 = []
-	df = pd.read_csv('./dataset_diabetes/data-set-dev.csv')
+	df = pd.read_csv('../dataset_diabetes/data-set-dev.csv')
 	data = cluster.data_filtered(df)
 	train_data,test_data = cluster.split_data(data)
 	list1=np.array_split(train_data,n)
@@ -18,6 +20,8 @@ if __name__ == '__main__':
 
 	def exception_handler(request, exception):
 		print "Request failed"
+
+	print list1
 
 	reqs = [
 		grequests.post('http://127.0.0.1:5000/cluster',data = {'key': list1[0]})

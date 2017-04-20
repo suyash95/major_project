@@ -64,14 +64,14 @@ def visualize(train_data,labels,centroids):
 	plt.show()
 
 
-def start_clustering(train_data):
+def start_clustering():
     #print train_data
-    df = pd.read_csv('./dataset_diabetes/data-set-dev.csv')
+    df = pd.read_csv('../dataset_diabetes/data-set-dev.csv')
     data = data_filtered(df)
 
     # train_data,test_data = split_data(data)
 
-    clf=kmeans(2, train_data)
+    clf=kmeans(2, data)
     #clf= KMeans(4)
     #clf.fit(train_data)
     #kmeanss.k_means(train_data,4)
@@ -82,5 +82,5 @@ def start_clustering(train_data):
     #metrices(labels,clf)
     #visualize(train_data,labels,centroids)
 
-    clusters = clf.fit(train_data)
-    return (clusters.labels_, clusters.cluster_centers_, train_data)
+    clusters = clf.fit(data)
+    return (clusters.labels_, clusters.cluster_centers_, data)
