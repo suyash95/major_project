@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 from sklearn import metrics
 from sklearn import cross_validation as cv
 import math
+from kuch_bhi.sklearn.cluster.k_means_ import k_means
+from kuch_bhi.sklearn.cluster.k_means_  import KMeans 
+
 #from file_split import file_split
 
 
@@ -71,12 +74,15 @@ def start_clustering(train_data):
     traindata,test_data = split_data(data)
 
     clf=kmeans(4, train_data)
-
+    #clf= KMeans(4)
+    #clf.fit(train_data)
+    #kmeanss.k_means(train_data,4)
+    
     label = getlabels(train_data)
-    labels,centroids = prediction(test_data,clf)
+    labels , centroids = prediction(test_data,clf)
     #print labels
     #metrices(labels,clf)
     #visualize(train_data,labels,centroids)
-    return (labels, centroids)
+    return (labels,centroids)
 
  
