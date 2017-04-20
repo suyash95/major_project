@@ -4,12 +4,12 @@ import numpy as np
 
 import cluster
 import json
-from ast import literal_eval	
+from ast import literal_eval
 
 app = Flask(__name__)
 
 @app.route("/cluster", methods=['POST'])
-def cluster_handler():	
+def cluster_handler():
     if request.method == 'POST' :
     	#print request.form
     	train_data = request.form.getlist('key')
@@ -26,11 +26,11 @@ def cluster_handler():
                 i=0
                 l=[]
                 l.append(element)
-    		
+
             i+=1
-        data = np.array(l)    
+        data = np.array(l)
         list1.append(data)
-        
+
         data1 = np.array(list1)
         print data1
 
@@ -40,12 +40,15 @@ def cluster_handler():
     	#print "train_data is:",train_data
     	#test_data = request.data1
     	#train_data = [item for value in train_data for item in literal_eval(value)]
-    	
+
     	#print train_data
 
-        labels, centroids = cluster.start_clustering(data1)
+        labels, centroids, train_data = cluster.start_clustering(data1)
 
-        res = { 'labels': labels.tolist(), 'centroids': centroids.tolist() }
+        res = {
+            'labels': labels.tolist(),
+            'centroids': centroids.tolist(),
+            'data': train_data.tolist() }
         return json.dumps(res)
 
     return "Not handled"

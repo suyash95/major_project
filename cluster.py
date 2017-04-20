@@ -1,13 +1,11 @@
 import pandas as pd
-import numpy as np 
+import numpy as np
 from time import time
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from sklearn import metrics
 from sklearn import cross_validation as cv
 import math
-from kuch_bhi.sklearn.cluster.k_means_ import k_means
-from kuch_bhi.sklearn.cluster.k_means_  import KMeans 
 
 #from file_split import file_split
 
@@ -37,7 +35,7 @@ def kmeans(k, train_data):
     clf.fit(train_data)
     #print clf
     print "training time:" , round(time()-t0,3), "s"
-    return clf 
+    return clf
 
 def prediction(test_data,clf):
 	t1=time()
@@ -68,21 +66,21 @@ def visualize(train_data,labels,centroids):
 
 def start_clustering(train_data):
     #print train_data
-    df = pd.read_csv('./dataset_diabetes/data-set.csv')
-    data = data_filtered(df)  
+    df = pd.read_csv('./dataset_diabetes/data-set-dev.csv')
+    data = data_filtered(df)
 
-    traindata,test_data = split_data(data)
+    # train_data,test_data = split_data(data)
 
-    clf=kmeans(4, train_data)
+    clf=kmeans(2, train_data)
     #clf= KMeans(4)
     #clf.fit(train_data)
     #kmeanss.k_means(train_data,4)
-    
-    label = getlabels(train_data)
-    labels , centroids = prediction(test_data,clf)
+    #
+    # label = getlabels(train_data)
+    # labels , centroids = prediction(test_data,clf)
     #print labels
     #metrices(labels,clf)
     #visualize(train_data,labels,centroids)
-    return (labels,centroids)
 
- 
+    clusters = clf.fit(train_data)
+    return (clusters.labels_, clusters.cluster_centers_, train_data)
