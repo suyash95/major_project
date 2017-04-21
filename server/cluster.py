@@ -11,8 +11,8 @@ import math
 
 
 def data_filtered(df):
-    filtered_data = df[df.race != '?']
-    data = filtered_data.as_matrix(columns=[df.columns[2],df.columns[4],df.columns[9]])
+    filtered_data = df
+    data = filtered_data.as_matrix(columns=[df.columns[14],df.columns[4],df.columns[9]])
     return data
 
 def split_data(data):

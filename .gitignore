@@ -3,3 +3,4 @@ js-web/
 server/client.pyc
 server/cluster.pyc
 web/resources/public/js/
+*.log

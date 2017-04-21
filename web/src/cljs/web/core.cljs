@@ -5,20 +5,12 @@
             [goog.events :as events]
             [goog.history.EventType :as HistoryEventType]
             [markdown.core :refer [md->html]]
-            [ajax.core :refer [GET POST]]
+            [ajax.core :as ajax]
             [web.ajax :refer [load-interceptors!]]
             [web.handlers]
             [web.subscriptions]
             [web.plot :as pl])
   (:import goog.History))
-
-(defn nav-link [uri title page collapsed?]
-  (let [selected-page (rf/subscribe [:page])]
-    [:li.nav-item
-     {:class (when (= page @selected-page) "active")}
-     [:a.nav-link
-      {:href uri
-       :on-click #(reset! collapsed? true)} title]]))
 
 (defn navbar []
   [:nav.navbar.navbar-default
@@ -33,19 +25,50 @@
      [:img {:src (str js/context "/img/warning_clojure.png")}]]]])
 
 (defn home-render []
-  [:div.row.marketing
-   [:div.col-lg-6 {:id "charts-container"}]])
+  [:div
+   [:div.row
+    [:div.col-md-4.col-md-offset-8.col-sm-offset-8
+     [:button.btn.btn-primary
+      {:on-click #(rf/dispatch [:get-cluster-data])}
+      "Plot Charts"]]]
+   [:div.row.marketing
+    [:div.col-md-6 {:id "charts-container"}]]])
 
-(defn home-did-mount []
-  (pl/bubble-plot "charts-container"))
+(defn dimple-component []
+  (let [chart (atom nil)
+        plot-chart (fn [data]
+                     (-> data
+                         (pl/new-chart "charts-container")
+                         pl/draw-bubble-plot))]
+      (r/create-class {:reagent-render (fn []
+                                         [:div.col-md-6 {:id "charts-container"}])
+                       :component-did-mount (fn [comp]
+                                              (reset! chart (-> (r/props comp)
+                                                                :data
+                                                                plot-chart)))
+                       :component-did-update (fn [comp]
+                                                (-> (r/props comp)
+                                                    :data
+                                                    (pl/update-bubble-plot @chart)))})))
+
+
+(defn dimple-container []
+  (let [cluster-data (rf/subscribe [:cluster-data])]
+    (fn []
+      [dimple-component @cluster-data])))
 
 (defn home-page []
-  (r/create-class {:reagent-render home-render
-                   :component-did-mount home-did-mount}))
+  [:div
+   [:div.row
+    [:div.col-md-4.col-md-offset-8.col-sm-offset-8
+     [:button.btn.btn-primary
+      {:on-click #(rf/dispatch [:get-cluster-data])}
+      "Plot Charts"]]]
+   [:div.row.marketing
+    [dimple-container]]])
 
 (def pages
-  {:home #'home-page
-   :about #'about-page})
+  {:home #'home-page})
 
 (defn page []
   [:div
@@ -58,9 +81,6 @@
 
 (secretary/defroute "/" []
   (rf/dispatch [:set-active-page :home]))
-
-(secretary/defroute "/about" []
-  (rf/dispatch [:set-active-page :about]))
 
 ;; -------------------------
 ;; History
@@ -75,8 +95,6 @@
 
 ;; -------------------------
 ;; Initialize app
-(defn fetch-docs! []
-  (GET "/docs" {:handler #(rf/dispatch [:set-docs %])}))
 
 (defn mount-components []
   (rf/clear-subscription-cache!)
@@ -85,6 +103,6 @@
 (defn init! []
   (rf/dispatch-sync [:initialize-db])
   (load-interceptors!)
-  (fetch-docs!)
   (hook-browser-navigation!)
-  (mount-components))
+  (mount-components)
+  (rf/dispatch [:get-cluster-data]))

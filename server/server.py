@@ -2,11 +2,13 @@ import json
 import numpy as np
 from flask import Flask
 from flask import request
+from flask_cors import CORS, cross_origin
 
 import cluster
 import client
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/cluster", methods=['POST', 'GET'])
 def cluster_handler():

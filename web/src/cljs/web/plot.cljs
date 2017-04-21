@@ -1,19 +1,6 @@
 (ns web.plot
   (:require [cljsjs.dimple]))
 
-(def test-data #js  [#js {:name "pt1"
-                          :x 12
-                          :y 17
-                          :z 22}
-                     #js {:name "pt2"
-                          :x 21
-                          :y 22
-                          :z 28}
-                     #js {:name "pt3"
-                          :x 7
-                          :y 54
-                          :z 99}])
-
 (defn add-measure-axis [chart axis label]
   (.addMeasureAxis chart axis label)
   chart)
@@ -26,11 +13,24 @@
   (.draw chart)
   chart)
 
-(defn bubble-plot [container-id]
-  (let [chart (js/dimple.chart. (.newSvg js/dimple (str "#" container-id 800 600) test-data))]
-       (-> chart
-           (add-measure-axis "x" "x")
-           (add-measure-axis "y" "y")
-           (add-measure-axis "z" "z")
-           (add-series "name" (.. js/dimple -plot -bubble))
-           draw-chart)))
+(defn add-storyboard [chart field cb]
+  (.setStoryboard chart field cb)
+  chart)
+
+(defn new-chart [data container-id]
+  (js/dimple.chart.
+    (.newSvg js/dimple (str "#" container-id) 800 600)
+    (clj->js data)))
+
+(defn draw-bubble-plot [chart]
+  (-> chart
+      (add-measure-axis "x" "x")
+      (add-measure-axis "y" "y")
+      (add-measure-axis "z" "z")
+      (add-series "name" (.. js/dimple -plot -bubble))
+      draw-chart))
+
+(defn update-bubble-plot [data chart]
+  (set! (.-data chart) (clj->js data))
+  (draw-chart chart))
+

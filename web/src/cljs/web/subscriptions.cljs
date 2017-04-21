@@ -1,5 +1,5 @@
 (ns web.subscriptions
-  (:require [re-frame.core :refer [reg-sub]]))
+  (:require [re-frame.core :refer [reg-sub subscribe]]))
 
 (reg-sub
   :page
@@ -7,6 +7,20 @@
     (:page db)))
 
 (reg-sub
-  :docs
+  :cluster-info
   (fn [db _]
-    (:docs db)))
+    (:cluster db)))
+
+
+(defn transform-cluster-data [cluster]
+  (mapv
+    (fn [[x y z]] {:name (str "name" x y z)
+                   :x (int x)
+                   :y y
+                   :z z})
+    (:data cluster)))
+
+(reg-sub
+  :cluster-data
+  (fn [_ _] (subscribe [:cluster-info]))
+  (fn [cluster _] {:data (transform-cluster-data cluster)}))

@@ -1,4 +1,5 @@
 (ns web.db)
 
 (def default-db
-  {:page :home})
+  {:page :home
+   :cluster nil})

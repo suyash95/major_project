@@ -14,6 +14,7 @@
                  [metosin/muuntaja "0.2.1"]
                  [metosin/ring-http-response "0.8.2"]
                  [mount "0.1.11"]
+                 [day8.re-frame/http-fx "0.1.3"]
                  [cljsjs/dimple "2.1.2-0"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.521" :scope "provided"]
@@ -107,7 +108,8 @@
                   :doo {:build "test"}
                   :source-paths ["env/dev/clj"]
                   :resource-paths ["env/dev/resources"]
-                  :repl-options {:init-ns user}
+                  :repl-options {:init-ns user
+                                 :timeout 180000}
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]}
    :project/test {:resource-paths ["env/test/resources"]
