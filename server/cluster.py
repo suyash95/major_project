@@ -12,8 +12,9 @@ import math
 
 def data_filtered(df):
     filtered_data = df
-    data = filtered_data.as_matrix(columns=[df.columns[14],df.columns[4],df.columns[9]])
+    data = filtered_data.as_matrix(columns=[df.columns[4], df.columns[3], df.columns[9]])
     return data
+
 
 def split_data(data):
     train_data, test_data = cv.train_test_split(data,test_size = 0.20)
@@ -63,24 +64,14 @@ def visualize(train_data,labels,centroids):
         plt.setp(lines,mew=2.0)
 	plt.show()
 
+def start_clustering(data):
+    df = data_filtered(pd.DataFrame.from_records(data))
+    clusters = kmeans(4, df)
+    return (clusters.labels_, clusters.cluster_centers_, df.tolist())
 
-def start_clustering():
-    #print train_data
+
+def default_clustering():
     df = pd.read_csv('../dataset_diabetes/data-set-dev.csv')
     data = data_filtered(df)
-
-    # train_data,test_data = split_data(data)
-
-    clf=kmeans(2, data)
-    #clf= KMeans(4)
-    #clf.fit(train_data)
-    #kmeanss.k_means(train_data,4)
-    #
-    # label = getlabels(train_data)
-    # labels , centroids = prediction(test_data,clf)
-    #print labels
-    #metrices(labels,clf)
-    #visualize(train_data,labels,centroids)
-
-    clusters = clf.fit(data)
+    clusters = kmeans(4, data)
     return (clusters.labels_, clusters.cluster_centers_, data)
