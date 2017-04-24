@@ -38,7 +38,7 @@
 ;(process-row ["1" "0" "3" "8" "9"] [0 1 2]) => [1 0 3]
 
 (defn prepare-data []
-  (let [rows (->> "dataset_diabetes/data-set-dev.csv"
+  (let [rows (->> "dataset_diabetes/data-set.csv"
                   (str cwd)
                   slurp
                   csv/parse-csv
@@ -96,6 +96,8 @@
        (float (/ z count))])
     aggregated-data))
 
+
+
 ; Given an existing labelled data find the new mean
 (defn get-centers [labelled-data]
   (calculate-mean (reduce (fn [acc {cluster-pos :label [x y z] :data}]
@@ -144,6 +146,7 @@
          (reset! centers (get-centers @labelled-data)))
        {:data @labelled-data
         :centers @centers}))
+
 
 
 
