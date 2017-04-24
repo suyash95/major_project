@@ -15,8 +15,10 @@ The process of chunking of data and parallelizing it is not finalized yet.
 ### Client
 
 Client is a clojurescript web application with Immutant server. It uses
-reagent and re-frame for components and state management. For data visualization
-we have chosen the simple yet glorious dimple.js (based on the mighty d3).
+[reagent](https://reagent-project.github.io/index.html) and
+[re-frame](https://github.com/Day8/re-frame) for components and state management.
+For data visualization we have chosen the simple yet glorious
+[dimple.js](http://dimplejs.org) (based on the mighty [d3](https://www.google.co.in/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjZn_CK-LXTAhUGLVAKHfI1B5gQFgglMAA&url=https%3A%2F%2Fd3js.org%2F&usg=AFQjCNEngFpGFxW0ZaZmI3pS4-txJ6rydg&sig2=AruESeEWqSdZZeN4EAbXaA)).
 
 
 ## Getting Started

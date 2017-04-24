@@ -43,6 +43,8 @@
       (r/create-class {:reagent-render (fn []
                                          [:div.col-md-6 {:id "charts-container"}])
                        :component-did-mount (fn [comp]
+                                              (println "did mount")
+                                              (rf/dispatch [:get-cluster-data])
                                               (reset! chart (-> (r/props comp)
                                                                 :data
                                                                 plot-chart)))
@@ -104,5 +106,4 @@
   (rf/dispatch-sync [:initialize-db])
   (load-interceptors!)
   (hook-browser-navigation!)
-  (mount-components)
-  (rf/dispatch [:get-cluster-data]))
+  (mount-components))

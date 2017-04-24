@@ -18,7 +18,7 @@
   :get-cluster-data
   (fn [_]
     {:http-xhrio {:method          :get
-                  :uri             "http://localhost:5000/cluster"
+                  :uri             "/cluster"
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-success [:set-cluster]
                   :on-failure [:error-handler]}}))

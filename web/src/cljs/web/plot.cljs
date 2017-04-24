@@ -9,12 +9,17 @@
   (.addSeries chart name chart-type)
   chart)
 
-(defn draw-chart [chart]
-  (.draw chart)
-  chart)
+(defn draw-chart
+  ([chart]
+   (draw-chart chart 2000))
+  ([chart transition-time]
+   (.draw chart transition-time)
+   chart))
 
 (defn add-storyboard [chart field cb]
-  (.setStoryboard chart field cb)
+  (let [story (.setStoryboard chart field cb)]
+    (.addOrderRule story  "y")
+    (set! (.-frameDuration story) 2000))
   chart)
 
 (defn new-chart [data container-id]

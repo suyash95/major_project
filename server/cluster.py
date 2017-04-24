@@ -6,13 +6,14 @@ import matplotlib.pyplot as plt
 from sklearn import metrics
 from sklearn import cross_validation as cv
 import math
-
+import timeit
 #from file_split import file_split
 
 
 def data_filtered(df):
     filtered_data = df
     data = filtered_data.as_matrix(columns=[df.columns[4], df.columns[3], df.columns[9]])
+    print 'data filtetered'
     return data
 
 
@@ -73,5 +74,5 @@ def start_clustering(data):
 def default_clustering():
     df = pd.read_csv('../dataset_diabetes/data-set-dev.csv')
     data = data_filtered(df)
-    clusters = kmeans(4, data)
+    clusters = kmeans(2, df)
     return (clusters.labels_, clusters.cluster_centers_, data)
